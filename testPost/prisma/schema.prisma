@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserType {
+  userTypeName String @unique
+  userTypeDesc String
+  User         User[]
+}
+
+model User {
+  userId        Int      @id @unique @default(autoincrement())
+  userTypeName  String
+  userType      UserType @relation(fields: [userTypeName], references: [userTypeName])
+  totalPlayTime Int
+  exp           Int
+  pp            Int
+  stars         Int
+  Auth          Auth[]
+}
+
+model Auth {
+  authId   Int    @id @unique @default(autoincrement())
+  userId   Int
+  user     User   @relation(fields: [userId], references: [userId])
+  email    String
+  password String
+  phone    String
+  userName String
+}
+
+model TrackSet{
+  trackSetId Int @id @unique @default(autoincrement())
+  beatmapSetId Int
+  songUrl  String
+  
+}
+
+
+model PassResult{
+  passResultId Int  @id @unique @default(autoincrement())
+  userId       Int
+  user         User @relation(fields: [userId], references: [userId])
+  trackId      Time
+  score        Int  @default(0)
+  hits         Int  @default(0)
+  misses       Int  @default(0)
+  healthBarData Int @default(0)
+  replayData    Int
+}
+
+
