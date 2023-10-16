@@ -17,14 +17,15 @@ model UserType {
 }
 
 model User {
-  userId        Int      @id @unique @default(autoincrement())
+  userId        Int          @id @unique @default(autoincrement())
   userTypeName  String
-  userType      UserType @relation(fields: [userTypeName], references: [userTypeName])
+  userType      UserType     @relation(fields: [userTypeName], references: [userTypeName])
   totalPlayTime Int
   exp           Int
   pp            Int
   stars         Int
   Auth          Auth[]
+  PassResult    PassResult[]
 }
 
 model Auth {
@@ -37,24 +38,41 @@ model Auth {
   userName String
 }
 
-model TrackSet{
-  trackSetId Int @id @unique @default(autoincrement())
-  beatmapSetId Int
-  songUrl  String
-  
+model TrackSet {
+  trackSetId    Int     @id @default(autoincrement())
+  beatmapSetId  Int     @unique
+  songUrl       String
+  title         String
+  titleUnicode  String
+  artist        String
+  artistUnicode String
+  track         Track[]
 }
 
+model Track {
+  trackId      Int          @id @default(autoincrement())
+  trackSetId   Int
+  trackSet     TrackSet     @relation(fields: [trackSetId], references: [trackSetId])
+  beatmapId    Int          @unique
+  difficulty   Int
+  image        String
+  approachRate Decimal
+  noteData     String
+  breakData    String
+  beatmapUrl   String
+  passResult   PassResult[]
+}
 
-model PassResult{
-  passResultId Int  @id @unique @default(autoincrement())
-  userId       Int
-  user         User @relation(fields: [userId], references: [userId])
-  trackId      Time
-  score        Int  @default(0)
-  hits         Int  @default(0)
-  misses       Int  @default(0)
-  healthBarData Int @default(0)
+model PassResult {
+  passResultId  Int   @id @unique @default(autoincrement())
+  userId        Int
+  user          User  @relation(fields: [userId], references: [userId])
+  trackId       Int
+  track         Track @relation(fields: [trackId], references: [trackId])
+  timestamp     Int
+  score         Int   @default(0)
+  hits          Int   @default(0)
+  misses        Int   @default(0)
+  healthBarData Int   @default(0)
   replayData    Int
 }
-
-
