@@ -1,14 +1,38 @@
 version: '3.8'
 services:
+  posttest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: posttest:latest
+    container_name: posttest
+    depends_on:
+      - postgres
+    networks:
+      - mynet
+    environment:
+      - DATABASE_URL=postgresql://test:test@postgres:5432/mydb
+    ports:
+      - '5555:5555'
+    command: ["sh", "-c", "npx prisma migrate dev && npx prisma studio"]
+
   postgres:
-    image: postgres:11.21-bullseye
+    image: postgres:latest
+    container_name: postgres
     restart: always
     environment:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
     volumes:
       - postgres:/var/lib/postgresql/data
+    networks:
+      - mynet
     ports:
       - '5432:5432'
+
+networks:
+  mynet:
+    driver: bridge
+
 volumes:
   postgres:
