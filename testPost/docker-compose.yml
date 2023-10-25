@@ -14,13 +14,15 @@ services:
       - DATABASE_URL=postgresql://test:test@postgres:5432/mydb
     ports:
       - '5555:5555'
-    command: ["sh", "-c", "npx prisma migrate dev && npx prisma studio"]
+      - '3000:3000'
+    command: ["sh", "-c", "npm start & npx prisma studio"]
 
   postgres:
     image: postgres:latest
     container_name: postgres
     restart: always
     environment:
+      - POSTGRES_DB=mydb
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
     volumes:
