@@ -67,10 +67,6 @@ When you make changes to the Prisma schema:
 
 ### 1. POST API for Adding User Types
 
-#### Implementation:
-```bash
-# Instructions go here (e.g., adding routes, controllers, etc.)
-```
 
 #### Testing with `curl`:
 ```bash
@@ -120,4 +116,4 @@ curl http://localhost:3000/userTypes
 
 **Notes**:
 - Ensure you handle URL encoding, especially if the `userTypeName` contains characters that aren't URL-friendly. Most tools, including Postman, handle this automatically.
-- This documentation is a guideline. Remember to replace placeholders like `# Instructions go here` with actual implementation steps and adapt as needed for your specific project setup.
+
