@@ -1,6 +1,6 @@
 # CS3750
 
-This repository is for the CS3750 project. this is a test for deploying postgres as well as a database built on prisma
+This repository is for the CS3750 project. This project is a test for deploying a PostgreSQL database and an API built with Prisma.
 
 ## Prerequisites
 
@@ -25,12 +25,29 @@ This repository is for the CS3750 project. this is a test for deploying postgres
     docker-compose up -d --build
     ```
 
-3. After executing the above commands, Docker will download the required images (if not available), build your containers, and start them.
+3. Once the above commands are executed, Docker will download the required images (if not available), build your containers, and start them.
 
 4. Visit your application at the provided port or check the running services using:
     ```bash
     docker-compose ps
     ```
+
+5. **Get API**: A simple GET API has been set up to fetch user types. Once the application is running, you can access it at:
+    ```
+    http://localhost:3000/userTypes
+    ```
+
+## Prisma and Schema Changes
+
+When you make changes to the Prisma schema:
+
+- **Outside of Docker**: Run `npx prisma generate` in your local environment every time you modify the Prisma schema. 
+
+    **Note**: In the PostgreSQL connection URL, use `localhost` when you're working outside of Docker.
+
+- **Inside of Docker**: Integrate `npx prisma generate` into your Docker image build process to ensure the Prisma Client matches the latest schema changes.
+
+    **Note**: In the PostgreSQL connection URL, use `postgres` when you're running inside a Docker container.
 
 ## Useful Docker Compose Commands
 
@@ -48,6 +65,4 @@ This repository is for the CS3750 project. this is a test for deploying postgres
     ```bash
     docker-compose exec [service-name] /bin/sh
     ```
-
----
 
