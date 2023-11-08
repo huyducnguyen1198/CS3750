@@ -95,10 +95,3 @@ DELETE /api/[table]/[recordId]
 
 Substitute `[table]` with the actual table name and `[recordId]` with the ID of the record you're querying or deleting.
 
-## Contributing
-
-Provide instructions on how others can contribute to your project.
-
-## License
-
-Include information about the project's license here.
