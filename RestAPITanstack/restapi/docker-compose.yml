@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  restapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: restapi:latest
+    container_name: restapi
+    depends_on:
+      - postgres
+    networks:
+      - mynet
+    environment:
+      - DATABASE_URL=postgresql://test:test@postgres:5432/mydb
+    ports:
+      - '3000:3000'
+      - '5555:5555'
+      
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mynet
+    ports:
+      - '5432:5432'
+
+networks:
+  mynet:
+    driver: bridge
+
+volumes:
+  pgdata:

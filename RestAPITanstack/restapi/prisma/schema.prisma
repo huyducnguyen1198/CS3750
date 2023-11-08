@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserType {
+  userTypeName String @unique
+  userTypeDesc String
+  User         User[]
+}
+
+model User {
+  userId        Int          @id @unique @default(autoincrement())
+  userTypeName  String
+  totalPlayTime Int
+  exp           Int
+  pp            Int
+  stars         Int
+  Auth          Auth[]
+  PassResult    PassResult[]
+  Stars         Stars[]
+  userType      UserType     @relation(fields: [userTypeName], references: [userTypeName])
+}
+
+model Auth {
+  authId   Int    @id @unique @default(autoincrement())
+  userId   Int
+  email    String
+  password String
+  phone    String
+  userName String
+  user     User   @relation(fields: [userId], references: [userId])
+}
+
+model Song {
+  songId        Int     @id @default(autoincrement())
+  beatmapSetId  Int     @unique
+  songUrl       String
+  title         String
+  titleUnicode  String
+  artist        String
+  artistUnicode String
+  levels        Level[]
+}
+
+model Level {
+  levelId      Int          @id @default(autoincrement())
+  songId       Int
+  beatmapId    Int          @unique
+  difficulty   Decimal
+  image        String
+  approachRate Decimal
+  noteData     String
+  breakData    String
+  beatmapUrl   String
+  songs        Song         @relation(fields: [songId], references: [songId])
+  passResult   PassResult[]
+}
+
+model PassResult {
+  passResultId  Int   @id @unique @default(autoincrement())
+  userId        Int
+  levelId       Int
+  timestamp     Int
+  score         Int   @default(0)
+  hits          Int   @default(0)
+  misses        Int   @default(0)
+  healthBarData Int   @default(0)
+  replayData    Int
+  level         Level @relation(fields: [levelId], references: [levelId])
+  user          User  @relation(fields: [userId], references: [userId])
+}
+
+model Stars {
+  trackId  Int  @id @unique @default(autoincrement())
+  userId   Int
+  received Int
+  user     User @relation(fields: [userId], references: [userId])
+}
